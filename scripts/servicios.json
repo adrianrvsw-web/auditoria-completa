@@ -1,0 +1,74 @@
+{
+  "_nota": "Catálogo de servicios de Newemage para el paquete que propone el diagnóstico. Sin plazos ni duraciones: el diagnóstico no compromete fechas; eso se define después en la propuesta o con plan-de-trabajo. Los marcados «supuesto: true» se infirieron de las herramientas del equipo: CONFIRMAR nombre y alcance antes de mandar la primera auditoría. Editar aquí, no en la plantilla.",
+  "servicios": {
+    "ux": {
+      "nombre": "Rediseño UX/UI",
+      "origen": "planeador",
+      "plantilla": "ux",
+      "que": "Auditoría a fondo, journey map, wireframes, sistema de diseño y prototipo navegable."
+    },
+    "sitio": {
+      "nombre": "Sitio web nuevo a la medida",
+      "origen": "planeador",
+      "plantilla": "sitio",
+      "que": "Arquitectura, diseño, desarrollo, SEO técnico, imágenes optimizadas y lanzamiento."
+    },
+    "landing": {
+      "nombre": "Landing page de conversión",
+      "origen": "planeador",
+      "plantilla": "landing",
+      "que": "Página enfocada en captar contactos, con formulario, WhatsApp y medición."
+    },
+    "seo": {
+      "nombre": "Optimización SEO",
+      "origen": "planeador",
+      "plantilla": "seo",
+      "que": "Auditoría on-page, palabras clave, títulos y descripciones, datos estructurados."
+    },
+    "rendimiento": {
+      "nombre": "Optimización de velocidad",
+      "origen": "herramienta Optimización",
+      "supuesto": true,
+      "que": "Caché, compresión, imágenes WebP y medición antes/después con PageSpeed."
+    },
+    "medicion": {
+      "nombre": "Medición y analítica",
+      "supuesto": true,
+      "que": "GA4, Tag Manager, eventos de conversión (formularios, WhatsApp, llamadas) y Search Console."
+    },
+    "mantenimiento": {
+      "nombre": "Actualización y seguridad",
+      "supuesto": true,
+      "que": "Actualizar CMS y plugins, PHP, respaldos, cabeceras de seguridad, enlaces y errores."
+    },
+    "geo": {
+      "nombre": "Visibilidad en buscadores con IA",
+      "supuesto": true,
+      "que": "Permisos para bots de IA, schema de la empresa, llms.txt y contenido tipo respuesta."
+    },
+    "contenido": {
+      "nombre": "Contenido y redacción",
+      "supuesto": true,
+      "que": "Actualizar textos, fichas de producto/servicio, preguntas frecuentes y blog."
+    },
+    "accesibilidad": {
+      "nombre": "Accesibilidad",
+      "supuesto": true,
+      "que": "Contraste, textos alternativos, etiquetas de formularios y navegación con teclado."
+    }
+  },
+  "frentes": {
+    "base": {
+      "nombre": "Base y contacto",
+      "idea": "Que pedir información sea fácil y que el sitio esté al día y protegido: formularios, medición, seguridad y errores visibles."
+    },
+    "visibilidad": {
+      "nombre": "Visibilidad y velocidad",
+      "idea": "Que Google y las IA entiendan y recomienden el sitio, y que cargue rápido en el teléfono."
+    },
+    "experiencia": {
+      "nombre": "Diseño y experiencia",
+      "idea": "Un diseño a la altura de la empresa, consistente en todo el sitio y pensado para el teléfono."
+    }
+  }
+}

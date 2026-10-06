@@ -1,0 +1,13 @@
+{
+  "cliente": "Empresa de ejemplo",
+  "slug": "empresa-ejemplo",
+  "base": "https://example.com/",
+  "maxPaginas": 10,
+  "relacion": "externo",
+  "locale": "es-MX",
+  "paginas": [],
+  "competidores": [],
+  "ocultar": [],
+  "excluir": [],
+  "incluirIdiomas": false
+}

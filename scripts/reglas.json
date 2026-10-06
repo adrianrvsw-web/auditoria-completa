@@ -1,0 +1,773 @@
+{
+  "version": 2,
+  "_nota": "La severidad y la puntuación NO las elige el modelo: salen de aquí. Claude redacta, agrupa y prioriza. Si cambias un peso, sube la versión.",
+  "etiquetas": [
+    {
+      "min": 85,
+      "nombre": "Bien",
+      "color": "ok"
+    },
+    {
+      "min": 70,
+      "nombre": "Aceptable",
+      "color": "fair"
+    },
+    {
+      "min": 50,
+      "nombre": "Por mejorar",
+      "color": "warn"
+    },
+    {
+      "min": 0,
+      "nombre": "Crítico",
+      "color": "bad"
+    }
+  ],
+  "areas": {
+    "ux": {
+      "orden": 1,
+      "nombre": "Experiencia y diseño",
+      "corto": "UX/UI",
+      "peso": 15,
+      "mezcla": {
+        "auto": 0.35,
+        "rubrica": 0.65
+      },
+      "pregunta": "¿Se entiende, se ve actual y funciona bien en cualquier pantalla?"
+    },
+    "leads": {
+      "orden": 2,
+      "nombre": "Conversión de contactos",
+      "corto": "Leads",
+      "peso": 20,
+      "mezcla": {
+        "auto": 0.6,
+        "rubrica": 0.4
+      },
+      "pregunta": "¿Es fácil que un interesado se convierta en contacto, y se puede medir?"
+    },
+    "seo": {
+      "orden": 3,
+      "nombre": "Posicionamiento en Google",
+      "corto": "SEO",
+      "peso": 15,
+      "mezcla": {
+        "auto": 1,
+        "rubrica": 0
+      },
+      "pregunta": "¿Google puede encontrar, entender y mostrar bien cada página?"
+    },
+    "geo": {
+      "orden": 4,
+      "nombre": "Visibilidad en IA",
+      "corto": "GEO",
+      "peso": 10,
+      "mezcla": {
+        "auto": 0.65,
+        "rubrica": 0.35
+      },
+      "pregunta": "¿ChatGPT, Gemini o Perplexity pueden leer el sitio y recomendar a la empresa?"
+    },
+    "rendimiento": {
+      "orden": 5,
+      "nombre": "Velocidad",
+      "corto": "Velocidad",
+      "peso": 15,
+      "mezcla": {
+        "auto": 1,
+        "rubrica": 0
+      },
+      "pregunta": "¿Carga rápido, sobre todo en teléfono y con datos móviles?"
+    },
+    "tecnica": {
+      "orden": 6,
+      "nombre": "Técnica y seguridad",
+      "corto": "Técnica",
+      "peso": 10,
+      "mezcla": {
+        "auto": 1,
+        "rubrica": 0
+      },
+      "pregunta": "¿Está al día, protegido y sin errores que el usuario pueda notar?"
+    },
+    "accesibilidad": {
+      "orden": 7,
+      "nombre": "Accesibilidad",
+      "corto": "Accesibilidad",
+      "peso": 7.5,
+      "mezcla": {
+        "auto": 1,
+        "rubrica": 0
+      },
+      "pregunta": "¿Lo puede usar cualquier persona, incluidas las que ven poco o navegan con teclado?"
+    },
+    "contenido": {
+      "orden": 8,
+      "nombre": "Contenido y vigencia",
+      "corto": "Contenido",
+      "peso": 7.5,
+      "mezcla": {
+        "auto": 0.4,
+        "rubrica": 0.6
+      },
+      "pregunta": "¿La información está al día y ayuda a decidir?"
+    }
+  },
+  "checks": {
+    "ux.viewport": {
+      "area": "ux",
+      "peso": 4,
+      "severidad": "critica",
+      "esfuerzo": 3,
+      "servicio": "sitio",
+      "titulo": "El sitio se adapta al teléfono (etiqueta viewport)"
+    },
+    "ux.desborde_movil": {
+      "area": "ux",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Sin desplazamiento horizontal en teléfono"
+    },
+    "ux.capa_bloquea": {
+      "area": "ux",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Ninguna ventana emergente tapa el contenido al llegar"
+    },
+    "ux.fijos_movil": {
+      "area": "ux",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Barras fijas ocupan menos del 25 % de la pantalla del teléfono"
+    },
+    "ux.texto_pequeno": {
+      "area": "ux",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "ux",
+      "titulo": "Texto legible en teléfono (menos del 10 % por debajo de 12 px)"
+    },
+    "ux.objetivos_tactiles": {
+      "area": "ux",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "ux",
+      "titulo": "Botones y enlaces con tamaño cómodo para el dedo (≥ 24 px)"
+    },
+    "ux.imagenes_rotas": {
+      "area": "ux",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Sin imágenes rotas"
+    },
+    "leads.formulario": {
+      "area": "leads",
+      "peso": 4,
+      "severidad": "alta",
+      "esfuerzo": 2,
+      "servicio": "landing",
+      "titulo": "Existe un formulario de contacto o cotización accesible sin cuenta"
+    },
+    "leads.cta_home": {
+      "area": "leads",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "La home muestra una acción de contacto sin desplazarse (escritorio y teléfono)"
+    },
+    "leads.cta_paginas": {
+      "area": "leads",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Cada página ofrece una acción de contacto clara"
+    },
+    "leads.campos": {
+      "area": "leads",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "landing",
+      "titulo": "Formularios cortos (7 campos o menos)"
+    },
+    "leads.aviso_privacidad": {
+      "area": "leads",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "landing",
+      "titulo": "Aviso de privacidad junto al formulario (LFPDPPP)"
+    },
+    "leads.antispam": {
+      "area": "leads",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Protección contra spam en formularios"
+    },
+    "leads.whatsapp": {
+      "area": "leads",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "landing",
+      "titulo": "Contacto directo por WhatsApp"
+    },
+    "leads.whatsapp_pais": {
+      "area": "leads",
+      "peso": 3,
+      "severidad": "critica",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Los enlaces de WhatsApp incluyen la clave de país"
+    },
+    "leads.tel_clicable": {
+      "area": "leads",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Los teléfonos se pueden tocar para llamar"
+    },
+    "leads.contacto_menu": {
+      "area": "leads",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "ux",
+      "titulo": "Contacto visible en el menú principal"
+    },
+    "leads.medicion": {
+      "area": "leads",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "medicion",
+      "titulo": "Analítica activa (GA4 o Tag Manager)"
+    },
+    "leads.pixeles": {
+      "area": "leads",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "medicion",
+      "titulo": "Base para campañas (píxel de Meta, Google Ads o LinkedIn)"
+    },
+    "seo.indexable": {
+      "area": "seo",
+      "peso": 4,
+      "severidad": "critica",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Google puede indexar el sitio (sin bloqueos ni noindex)"
+    },
+    "seo.titulos": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Títulos únicos y de largo adecuado en cada página"
+    },
+    "seo.descripciones": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Descripciones propias en cada página"
+    },
+    "seo.h1": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Un encabezado principal (H1) por página"
+    },
+    "seo.canonical": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "URL canónica declarada"
+    },
+    "seo.sitemap": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Mapa del sitio (sitemap.xml)"
+    },
+    "seo.robots": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Archivo robots.txt con el sitemap declarado"
+    },
+    "seo.schema": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Datos estructurados (schema.org)"
+    },
+    "seo.og": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Vista previa al compartir (Open Graph)"
+    },
+    "seo.lang": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Idioma declarado"
+    },
+    "seo.error404": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "seo",
+      "titulo": "Las páginas inexistentes responden 404"
+    },
+    "seo.enlaces_rotos": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Sin enlaces internos rotos"
+    },
+    "seo.canonicalizacion": {
+      "area": "seo",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Una sola versión del dominio (https, con o sin www)"
+    },
+    "seo.contenido": {
+      "area": "seo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "contenido",
+      "titulo": "Páginas con texto suficiente para posicionar (≥ 250 palabras)"
+    },
+    "geo.bots_ia": {
+      "area": "geo",
+      "peso": 3,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "geo",
+      "titulo": "Los buscadores de IA tienen permitido leer el sitio"
+    },
+    "geo.sin_js": {
+      "area": "geo",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 3,
+      "servicio": "sitio",
+      "titulo": "El contenido se lee sin ejecutar JavaScript"
+    },
+    "geo.entidad": {
+      "area": "geo",
+      "peso": 3,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "geo",
+      "titulo": "La empresa está descrita como entidad (nombre, teléfono, dirección, redes)"
+    },
+    "geo.llms_txt": {
+      "area": "geo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "geo",
+      "titulo": "Archivo llms.txt (estándar emergente)"
+    },
+    "geo.faq": {
+      "area": "geo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "contenido",
+      "titulo": "Preguntas frecuentes respondidas en el sitio"
+    },
+    "geo.nosotros": {
+      "area": "geo",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "contenido",
+      "titulo": "Página que explica quién es la empresa"
+    },
+    "rend.psi_movil": {
+      "area": "rendimiento",
+      "peso": 5,
+      "severidad": "alta",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "Puntuación de velocidad en teléfono (PageSpeed)"
+    },
+    "rend.psi_escritorio": {
+      "area": "rendimiento",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "Puntuación de velocidad en computadora (PageSpeed)"
+    },
+    "rend.campo": {
+      "area": "rendimiento",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "Usuarios reales: Core Web Vitals aprobadas (Chrome UX Report)"
+    },
+    "rend.lcp": {
+      "area": "rendimiento",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "El contenido principal aparece en menos de 2.5 s (teléfono)"
+    },
+    "rend.peso": {
+      "area": "rendimiento",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "Peso de página razonable (≤ 2.5 MB)"
+    },
+    "rend.imagenes": {
+      "area": "rendimiento",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "rendimiento",
+      "titulo": "Imágenes en formato moderno y al tamaño en que se muestran"
+    },
+    "rend.compresion": {
+      "area": "rendimiento",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "rendimiento",
+      "titulo": "Compresión activada en el servidor"
+    },
+    "rend.terceros": {
+      "area": "rendimiento",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "rendimiento",
+      "titulo": "Pocos servicios externos cargando en cada página"
+    },
+    "tec.https": {
+      "area": "tecnica",
+      "peso": 4,
+      "severidad": "critica",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Conexión segura (https) y redirección desde http"
+    },
+    "tec.certificado": {
+      "area": "tecnica",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Certificado SSL vigente"
+    },
+    "tec.hsts": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "HSTS activo"
+    },
+    "tec.cabeceras": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Cabeceras de seguridad básicas"
+    },
+    "tec.version_servidor": {
+      "area": "tecnica",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 2,
+      "servicio": "mantenimiento",
+      "titulo": "Versión de PHP con soporte y no expuesta"
+    },
+    "tec.cms": {
+      "area": "tecnica",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 2,
+      "servicio": "mantenimiento",
+      "titulo": "Gestor de contenidos actualizado"
+    },
+    "tec.librerias": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "mantenimiento",
+      "titulo": "Librerías sin vulnerabilidades conocidas (jQuery ≥ 3.5)"
+    },
+    "tec.wp_expuesto": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "WordPress no expone usuarios ni XML-RPC"
+    },
+    "tec.contenido_mixto": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Sin recursos inseguros (http) en páginas https"
+    },
+    "tec.errores_js": {
+      "area": "tecnica",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "mantenimiento",
+      "titulo": "Sin errores de JavaScript en consola"
+    },
+    "tec.recursos_rotos": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Sin archivos que fallan al cargar (4xx/5xx)"
+    },
+    "tec.favicon": {
+      "area": "tecnica",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Icono del sitio (favicon)"
+    },
+    "tec.obsoleta": {
+      "area": "tecnica",
+      "peso": 2,
+      "severidad": "alta",
+      "esfuerzo": 3,
+      "servicio": "sitio",
+      "titulo": "Sin tecnología obsoleta (Flash, Universal Analytics)"
+    },
+    "a11y.axe": {
+      "area": "accesibilidad",
+      "peso": 4,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "accesibilidad",
+      "titulo": "Sin barreras graves de accesibilidad (axe-core, WCAG 2.1 AA)"
+    },
+    "a11y.psi": {
+      "area": "accesibilidad",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "accesibilidad",
+      "titulo": "Puntuación de accesibilidad (Lighthouse)"
+    },
+    "a11y.alt": {
+      "area": "accesibilidad",
+      "peso": 2,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "accesibilidad",
+      "titulo": "Imágenes con texto alternativo"
+    },
+    "a11y.contraste": {
+      "area": "accesibilidad",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "ux",
+      "titulo": "Contraste de texto suficiente"
+    },
+    "cont.relleno": {
+      "area": "contenido",
+      "peso": 3,
+      "severidad": "alta",
+      "esfuerzo": 1,
+      "servicio": "contenido",
+      "titulo": "Sin texto de relleno o de plantilla visible"
+    },
+    "cont.anio": {
+      "area": "contenido",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Año del pie de página al día"
+    },
+    "cont.caducado": {
+      "area": "contenido",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 1,
+      "servicio": "contenido",
+      "titulo": "Sin menciones caducadas (COVID-19, Google+, Flash…)"
+    },
+    "cont.actualizacion": {
+      "area": "contenido",
+      "peso": 2,
+      "severidad": "media",
+      "esfuerzo": 2,
+      "servicio": "contenido",
+      "titulo": "Contenido actualizado en los últimos 12 meses (sitemap)"
+    },
+    "cont.blog": {
+      "area": "contenido",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 2,
+      "servicio": "contenido",
+      "titulo": "Blog o noticias con publicaciones recientes (≤ 6 meses)"
+    },
+    "cont.enlaces_externos": {
+      "area": "contenido",
+      "peso": 1,
+      "severidad": "baja",
+      "esfuerzo": 1,
+      "servicio": "mantenimiento",
+      "titulo": "Enlaces externos y a redes que funcionan"
+    }
+  },
+  "rubricas": {
+    "_escala": "0 = no se cumple · 1 = a medias · 2 = se cumple. Cada punto necesita una observación concreta (página y qué se vio).",
+    "ux": [
+      {
+        "id": "propuesta",
+        "criterio": "Se entiende qué hace la empresa y para quién en los primeros 5 segundos"
+      },
+      {
+        "id": "jerarquia",
+        "criterio": "Jerarquía visual clara: títulos, textos y acciones se distinguen"
+      },
+      {
+        "id": "actualidad",
+        "criterio": "La estética se percibe actual (tipografía, espacios, imágenes, iconografía)"
+      },
+      {
+        "id": "consistencia",
+        "criterio": "Estilos consistentes entre páginas (botones, colores, tipografías)"
+      },
+      {
+        "id": "navegacion",
+        "criterio": "Menú claro, con los nombres que usa el cliente y pocas opciones principales"
+      },
+      {
+        "id": "movil",
+        "criterio": "En teléfono se lee y se usa sin zoom ni elementos encimados"
+      },
+      {
+        "id": "imagenes",
+        "criterio": "Fotografía propia y de calidad (no genérica, no pixelada)"
+      },
+      {
+        "id": "confianza",
+        "criterio": "Señales de confianza visibles (clientes, certificaciones, casos, trayectoria)"
+      }
+    ],
+    "leads": [
+      {
+        "id": "camino",
+        "criterio": "Desde cualquier página hay un camino evidente para contactar o cotizar"
+      },
+      {
+        "id": "friccion",
+        "criterio": "Pedir información no exige cuenta, pasos de más ni datos innecesarios"
+      },
+      {
+        "id": "botones",
+        "criterio": "Los botones dicen qué obtiene el usuario (no solo «Enviar» o «Ver más»)"
+      },
+      {
+        "id": "despues",
+        "criterio": "El sitio dice qué pasa después de contactar (tiempos, siguiente paso)"
+      },
+      {
+        "id": "prueba",
+        "criterio": "Hay prueba social cerca de las acciones (testimonios, logos, casos)"
+      }
+    ],
+    "geo": [
+      {
+        "id": "respuestas",
+        "criterio": "Los textos responden preguntas concretas del cliente (qué, cuánto, cómo, dónde)"
+      },
+      {
+        "id": "autoridad",
+        "criterio": "Se muestra quién respalda el contenido (experiencia, certificaciones, datos verificables)"
+      },
+      {
+        "id": "marca",
+        "criterio": "Al buscar la marca y su categoría, el sitio aparece con información correcta (muestra)"
+      }
+    ],
+    "contenido": [
+      {
+        "id": "vigente",
+        "criterio": "Sin información caducada (fechas, avisos, promociones, noticias viejas)"
+      },
+      {
+        "id": "claridad",
+        "criterio": "Textos claros, orientados al beneficio del cliente, sin jerga innecesaria"
+      },
+      {
+        "id": "profundidad",
+        "criterio": "Cada producto o servicio tiene información suficiente para decidir"
+      },
+      {
+        "id": "ortografia",
+        "criterio": "Sin errores de ortografía o de traducción visibles"
+      },
+      {
+        "id": "recursos",
+        "criterio": "Ofrece recursos útiles (fichas, catálogos, guías, FAQ) fáciles de encontrar"
+      }
+    ]
+  }
+}
