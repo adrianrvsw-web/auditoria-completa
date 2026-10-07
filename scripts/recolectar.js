@@ -194,7 +194,7 @@ function extraer(vp) {
       avisoPrivacidad: /privacidad|privacy|datos personales/.test(txtZona) || !!zona.querySelector('a[href*="privacidad"],a[href*="privacy"],a[href*="aviso"]'),
       casillaAcepto: !!f.querySelector('input[type=checkbox]') && /acept|privacidad|t[ée]rminos/.test(t(f).toLowerCase()),
       plugin: /wpcf7/.test(f.className) ? 'Contact Form 7' : /elementor/.test(f.className) ? 'Elementor' : /gform/.test(f.id + f.className) ? 'Gravity Forms' : /wpforms/.test(f.className) ? 'WPForms' : /hs-form|hbspt/.test(f.className) ? 'HubSpot' : null,
-      yTop: Math.round(r.top + scrollY),
+      yTop: Math.round(r.top + window.pageYOffset),
     };
   });
   const iframesForm = [...document.querySelectorAll('iframe')].map(i => i.src).filter(s => /typeform|jotform|forms\.gle|docs\.google\.com\/forms|hsforms|forms\.office|calendly|tally\.so/.test(s));
@@ -220,7 +220,7 @@ function extraer(vp) {
   const ctas = [...document.querySelectorAll('a,button,input[type=submit],[role=button]')]
     .filter(e => visible(e) && esBoton(e) && (t(e) || e.value) && (t(e) || e.value).length <= 50 && !e.closest('form[role=search]'))
     .map(e => { const r = e.getBoundingClientRect(); const txt = (t(e) || e.value).slice(0, 50);
-      return { txt, fuerte: reFuerte.test(txt + ' ' + (e.getAttribute('href') || '')), pliegue: r.top < vh && r.bottom > 0 && r.top >= -5, y: Math.round(r.top + scrollY) }; });
+      return { txt, fuerte: reFuerte.test(txt + ' ' + (e.getAttribute('href') || '')), pliegue: r.top < vh && r.bottom > 0 && r.top >= -5, y: Math.round(r.top + window.pageYOffset) }; });
 
   // Imágenes
   const imgs = [...document.images].map(im => { const r = im.getBoundingClientRect(); const src = im.currentSrc || im.src || '';
@@ -372,7 +372,7 @@ async function recorrerPagina(browser, url, id, vp, axeSrc) {
     status = resp?.status(); final = page.url();
     await page.waitForTimeout(2500);
     // desplazarse para disparar lazy-load y animaciones de entrada; luego volver arriba
-    await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 25000; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise(r => setTimeout(r, 180)); } scrollTo(0, 0); });
+    await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 25000; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise(r => setTimeout(r, 180)); } await new Promise(r => setTimeout(r, 600)); scrollTo(0, 0); });
     await page.waitForTimeout(1500);
   } catch (e) { error = String(e).slice(0, 200); }
 

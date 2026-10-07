@@ -105,6 +105,12 @@ def veredicto_visual(d):
     return v.get("estado") or "Desactualizado", sum(1 for x in cr if x["estado"] == "desactualizado"), len(cr)
 
 
+def plural(t):
+    """«Desactualizado» → «desactualizados», «Actual» → «actuales», «Insuficiente» → «insuficientes»."""
+    t = t.lower()
+    return t + ("s" if t[-1] in "aeiou" else "es")
+
+
 EST_TXT = {"ok": "Cumple", "falla": "No cumple", "parcial": "A medias", "na": "No aplica"}
 
 
@@ -246,6 +252,11 @@ def validar(inf, raiz):
     for p in pr:
         if p not in {h["id"] for h in vis}:
             err.append(f"prioridades: {p} no es un hallazgo visible")
+    for p in inf.get("inmediatos", []):
+        if p not in {h["id"] for h in vis}:
+            err.append(f"inmediatos: {p} no es un hallazgo visible")
+        elif p in pr:
+            err.append(f"inmediatos: {p} ya es una de las tres prioridades")
     for aid, crit in REGLAS["rubricas"].items():
         if aid.startswith("_") or REGLAS["areas"][aid]["mezcla"]["rubrica"] == 0:
             continue
@@ -371,7 +382,11 @@ def sec_resumen(inf, hs_by_id, hs, sitio):
             f'<div class="card kpi kpi--quick"><b>{rap}</b><span>arreglos rápidos</span></div>')
     fort = "".join(f'<li>{ICON["check"]}<div><b>{e(f["titulo"])}</b><span>{rich(f["texto"])}</span></div></li>' for f in inf["fortalezas"])
     # Arreglos inmediatos: mucho efecto y poco esfuerzo, fuera de las 3 prioridades (no compiten con ellas)
-    inm = [h for h in vis if h["impacto"] >= 3 and h["esfuerzo"] == 1 and h["id"] not in inf["prioridades"]][:3]
+    # informe.inmediatos (opcional) fija la lista a mano: arreglos de poco esfuerzo que conviene nombrar aunque su impacto sea medio
+    if inf.get("inmediatos"):
+        inm = [hs_by_id[i] for i in inf["inmediatos"]][:3]
+    else:
+        inm = [h for h in vis if h["impacto"] >= 3 and h["esfuerzo"] == 1 and h["id"] not in inf["prioridades"]][:3]
     rapidos = ('<div class="inm"><span>Además, arreglos inmediatos</span><ul>' + "".join(f'<li><a href="#h-{e(h["id"])}"><code>{e(h["id"])}</code>{e(h["titulo"])}</a></li>' for h in inm) + "</ul></div>") if inm else ""
     prios = ""
     for i, pid in enumerate(inf["prioridades"], 1):
@@ -420,12 +435,15 @@ def sec_diseno(inf, sitio, M):
     vv = veredicto_visual(d)
     if vv:
         v = d["veredicto"]
-        asp = "".join(f'<li class="asp asp--{x["estado"]}"><span class="asp__st">{ASPECTO_TXT[x["estado"]]}</span><b>{e(x["aspecto"])}</b><small>{rich(x["nota"])}</small></li>' for x in v["criterios"])
+        # veredicto.etiquetas (opcional) renombra los tres estados, p. ej. {"desactualizado": "Insuficiente"} cuando el problema
+        # no es la antigüedad sino un diseño demasiado simple; las claves y los colores no cambian
+        txt = {**ASPECTO_TXT, **{k: t for k, t in (v.get("etiquetas") or {}).items() if k in ASPECTO_TXT}}
+        asp = "".join(f'<li class="asp asp--{x["estado"]}"><span class="asp__st">{e(txt[x["estado"]])}</span><b>{e(x["aspecto"])}</b><small>{rich(x["nota"])}</small></li>' for x in v["criterios"])
         n = {k: sum(1 for x in v["criterios"] if x["estado"] == k) for k in ASPECTO_TXT}
         barra = "".join(f'<i class="asp--{k}" style="flex:{n[k]}"></i>' for k in ASPECTO_TXT if n[k])
         ver = (f'<div class="on-dark vv rv"><div class="vv__main"><span class="tag">Veredicto visual</span><b class="vv__v">{e(vv[0])}</b>'
                f'<p>{rich(v.get("texto", ""))}</p><div class="vv__bar" aria-hidden="true">{barra}</div>'
-               f'<small>{n["desactualizado"]} desactualizados · {n["mejorable"]} mejorables · {n["actual"]} actuales</small></div><ul class="aspects">{asp}</ul></div>')
+               f'<small>{" · ".join(f"{n[k]} {plural(txt[k])}" for k in ASPECTO_TXT)}</small></div><ul class="aspects">{asp}</ul></div>')
 
     gal = ""
     for p in sitio["paginas"]:
