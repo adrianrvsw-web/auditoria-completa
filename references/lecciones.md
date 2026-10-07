@@ -25,6 +25,11 @@ detalles privados en `clientes/<slug>/`, no en las lecciones compartidas.
 | La ventana emergente tapaba la home y su botón de cerrar no mostraba la «×» | Popup de entrada | `ux.capa_bloquea` la detecta; mira el botón de cerrar con zoom en la captura. Para los recortes de diseño, `ocultar` el popup y el chat con los selectores reales del sitio |
 | Escribí «bloquea a ChatGPT, Claude, Perplexity y Gemini» cuando robots.txt solo bloqueaba PerplexityBot y los rastreadores de entrenamiento; los chips del propio hallazgo lo contradecían | Permisos de bots de IA | Antes de redactar GEO-01, lee bot por bot: buscadores vs. entrenamiento (ver revision-manual §5) |
 | El equipo detectó detalles de diseño en páginas fuera de la muestra (cursos, categorías profundas) | Sitio con varias plantillas | Recorre al menos dos páginas de cada plantilla secundaria, aunque no entren en las 10 de la muestra |
+| Las capturas limpias salían en negro debajo de la portada | `capturas_limpias.js` forzaba `overflow:auto` en `html` y `body`; en un sitio con WPBakery eso volvió el `body` una caja con scroll | Ya solo destraba el eje que esté bloqueado (`overflow-y: hidden`). Compara siempre el peso y el alto de la captura limpia con la original |
+| Los recortes por selector habrían fallado sin aviso | El sitio define una función global `scrollY`; `r.top + scrollY` daba `NaN` | Los scripts usan `window.pageYOffset`. En sondeos propios, usa `pageYOffset` o `document.scrollingElement.scrollTop` |
+| Una franja de cierre con teléfono y correo no salía en ninguna captura | Solo aparece con una animación de entrada al llegar al fondo; el recorrido volvía arriba antes de que arrancara | El recorrido ahora espera 600 ms al fondo. Antes de escribir «la página no invita a cotizar», desplázate con la rueda hasta el final y mira qué aparece |
+| Un encabezado de plantilla («Este es un elemento de encabezado personalizado») estaba en el HTML pero no se veía | Su animación nunca se dispara (opacidad 0) | Repórtalo como texto que leen Google y los lectores de pantalla, no como algo visible. Comprueba la opacidad heredada antes de decir que algo «se ve» |
+| Anoté mal a qué número llevaba el botón flotante de WhatsApp | Lo había apuntado en la fase 2 y lo iba a redactar de memoria | Justo antes de redactar un hallazgo de datos de contacto, vuelve a listar cada `tel:`, `sms:`, `wa.me`, mapa y correo con la zona donde está (menú, barra, pie, cuerpo) |
 
 ## Construcción y QA del entregable
 
@@ -45,6 +50,12 @@ detalles privados en `clientes/<slug>/`, no en las lecciones compartidas.
 | El logo cambiaba de tamaño entre barra oscura y clara | `logo-newemage-color.svg` del Brand Kit se deforma (la «e» sale ovalada): se usa `logo-newemage-dark.svg` sobre claro, a 34 px de alto |
 | Galería de páginas cortada a la derecha y tarjetas encimadas | En escritorio es cuadrícula; la barra de URL necesita `min-width: 0` para no ensanchar la tarjeta |
 | La portada del diagnóstico y el sitio en vivo mostraban la ventana emergente encima de la home | `config.ocultar` + `capturas_limpias.js`: las piezas principales usan la versión sin ventana; la ventana se muestra solo en su hallazgo |
+| La barra del marco decía `/contacto/` sobre una captura de otra página | El marco toma la primera de `paginas` del hallazgo | Si la evidencia viene de otra página, pon `url` en esa evidencia |
+| El veredicto visual decía «Desactualizado» en un sitio que no es viejo, sino demasiado simple | Las etiquetas de estado eran fijas | `diseno.veredicto.etiquetas` renombra el estado (p. ej. «Insuficiente»); ajusta también titular, subtítulo y la cifra del hallazgo principal |
+| Un arreglo acordado como «inmediato» no entraba en la lista porque su impacto era medio | La lista se calculaba solo con impacto 3 y esfuerzo 1 | Usa `inmediatos` en `informe.json` en lugar de inflar el impacto del hallazgo |
+| El recorte de ortografía se cortaba en la tarjeta antes de las faltas citadas en el pie | El recorte era alto y la tarjeta limita la altura | Recorta ancho y bajo, justo lo que nombra el pie; lo que el pie cita debe verse sin abrir el visor |
+| Para mostrar la paleta no había captura posible | El hallazgo era de color, repartido en seis páginas | Mide los colores calculados (texto y fondo, por página) y arma una lámina con Pillow en `evidencia/`; dilo en el pie y en limitaciones: es una ilustración, no una captura |
+| `analizar.py` y `construir.py` fallaron con «Not a directory» | Les pasé `config.json`; reciben la carpeta del cliente (los de Node que recolectan reciben el `config.json`) | `analizar.py`, `construir.py`, `verificar.js` y `empaquetar.py` → `../clientes/<slug>`; `recolectar.js`, `rendimiento.js` y `capturas_limpias.js` → `…/config.json` |
 
 ## Falsos positivos que casi entran (heredados de auditoria-ux-comercial)
 

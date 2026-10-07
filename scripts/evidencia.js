@@ -48,7 +48,7 @@ const UA = {
       await page.goto(it.url, { waitUntil: 'load', timeout: 60000 });
       await page.waitForTimeout(it.esperar ?? 1500);
       if (it.selector || it.clip || it.recorrer) { // dispara lazy-load antes de recortar abajo del pliegue
-        await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 20000; y += 700) { scrollTo(0, y); await new Promise(r => setTimeout(r, 120)); } scrollTo(0, 0); });
+        await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 20000; y += 700) { scrollTo(0, y); await new Promise(r => setTimeout(r, 120)); } await new Promise(r => setTimeout(r, 600)); scrollTo(0, 0); });  // la pausa al fondo deja arrancar las animaciones de entrada del pie
         await page.waitForTimeout(it.esperarTras ?? 800);  // contadores y animaciones de entrada: dales tiempo (p. ej. 4000)
       }
       await page.evaluate(({ ocultar, resaltar, etiqueta }) => {
@@ -62,7 +62,7 @@ const UA = {
         if (etiqueta && primero) {
           const r = primero.getBoundingClientRect(), d = document.createElement('div');
           d.className = 'ne-etq'; d.textContent = etiqueta;
-          d.style.left = Math.max(8, r.left + scrollX) + 'px'; d.style.top = Math.max(8, r.top + scrollY - 34) + 'px';
+          d.style.left = Math.max(8, r.left + window.pageXOffset) + 'px'; d.style.top = Math.max(8, r.top + window.pageYOffset - 34) + 'px';
           document.body.appendChild(d);
         }
       }, { ocultar: it.ocultar, resaltar: it.resaltar, etiqueta: it.etiqueta });
@@ -73,7 +73,7 @@ const UA = {
         await loc.scrollIntoViewIfNeeded({ timeout: 5000 });
         const b = await loc.boundingBox();
         if (!b) throw new Error('selector sin caja visible');
-        const sy = await page.evaluate(() => scrollY);
+        const sy = await page.evaluate(() => window.pageYOffset);  // pageYOffset: hay sitios que redefinen scrollY como función
         const W = VPS[vp].width;
         const clip = { x: Math.max(0, b.x - m), y: Math.max(0, b.y + sy - m), width: Math.min(W - Math.max(0, b.x - m), b.width + 2 * m), height: Math.min(altoMax, b.height + 2 * m) };
         await page.evaluate(() => scrollTo(0, 0));

@@ -19,12 +19,15 @@ los IDs y hallazgos automáticos pueden cambiar: compara con el borrador nuevo a
     "texto": "…",
     "veredicto": {                                       // opcional, muy recomendado: bloque oscuro al inicio de 02 + acceso en la portada
       "estado": "Desactualizado", "texto": "De nueve aspectos, *cinco* se ven desactualizados…",
-      "criterios": [ { "aspecto": "Portada", "estado": "desactualizado", "nota": "…" } ]   // desactualizado | mejorable | actual
-    },
+      "criterios": [ { "aspecto": "Portada", "estado": "desactualizado", "nota": "…" } ],  // desactualizado | mejorable | actual
+      "etiquetas": { "desactualizado": "Insuficiente" }  // opcional: renombra un estado cuando el problema no es la antigüedad
+    },                                                   // (p. ej. un diseño demasiado simple); claves y colores no cambian
     "senales": [ { "titulo": "…", "texto": "…", "img": "d-tipografia.png", "pie": "Home · bloque …" } ],  // 3–8
     "comparacion": [ { "hoy": "…", "se_espera": "…" } ]                                                    // 4–5, opcional
   },
   "prioridades": [ "LEAD-01", "SEO-02", "TEC-01" ],     // 3 IDs visibles
+  "inmediatos":  [ "LEAD-06", "CONT-01" ],              // opcional, máx. 3: fija a mano «Además, arreglos inmediatos»; si falta,
+                                                        // se toman los visibles con impacto 3 y esfuerzo 1 que no son prioridad
 
   "areas": { "ux": { "veredicto": "…" }, … las 8 … },
 
@@ -46,6 +49,7 @@ los IDs y hallazgos automáticos pueden cambiar: compara con el borrador nuevo a
       "datos": [ { "k": "Páginas", "v": "10 de 10" } ],          // chips; máx. 4
       "evidencia": [ { "img": "cotizar-login.png", "pie": "…", "marco": "browser" } ], // en evidencia/ o capturas/…; máx. 2.
                                                    // marco opcional: browser · phone · plain (si no, se deduce de la forma)
+                                                   // url opcional: texto de la barra del marco; por defecto, la primera de «paginas»
       "paginas": [ "/cotizar/" ],
       "_tecnico": { … }          // lo deja analizar.py; construir lo ignora salvo en ocultos sin redactar
     }

@@ -36,7 +36,7 @@ const TOPE = { desktop: 7000, mobile: 9000 };
 
 (async () => {
   const browser = await chromium.launch({ headless: true, channel: 'chrome' });
-  const css = OCULTAR.map(s => `${s}{display:none!important}`).join('') + 'html,body{overflow:auto!important}';  // los popups suelen bloquear el desplazamiento
+  const css = OCULTAR.map(s => `${s}{display:none!important}`).join('');
   for (const { id, url } of SITIO.paginas) {
     if (SOLO && id !== SOLO) continue;
     for (const vp of ['desktop', 'mobile']) {
@@ -45,8 +45,11 @@ const TOPE = { desktop: 7000, mobile: 9000 };
       try {
         await page.goto(url, { waitUntil: 'load', timeout: 60000 });
         await page.waitForTimeout(2500);
-        await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 25000; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise(r => setTimeout(r, 180)); } scrollTo(0, 0); });
-        await page.addStyleTag({ content: css });
+        await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight && y < 25000; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise(r => setTimeout(r, 180)); } await new Promise(r => setTimeout(r, 600)); scrollTo(0, 0); });
+        // los popups suelen bloquear el desplazamiento: se destraba solo donde está bloqueado
+        // (forzarlo siempre convierte el body en una caja con scroll y la captura completa sale vacía)
+        const trabados = await page.evaluate(() => ['html', 'body'].filter(s => getComputedStyle(document.querySelector(s)).overflowY === 'hidden'));
+        await page.addStyleTag({ content: css + trabados.map(s => `${s}{overflow-y:auto!important}`).join('') });
         await page.waitForTimeout(1500);
         const base = path.join(OUT, `${vp}-${id}`);
         await page.screenshot({ path: base + '.png' });
